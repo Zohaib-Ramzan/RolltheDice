@@ -33,7 +33,6 @@ const Dice = ({imageUrl} : Diceprops) => {
 
 
 function App(): JSX.Element {
-  const dicePicker = DicePicker()[0]
 
   return (
     <View>
