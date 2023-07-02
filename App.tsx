@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -8,12 +8,18 @@ import {
   Image,
   View,
   ImageSourcePropType,
+  Pressable,
 } from 'react-native';
-import MyPicker from 'react-native-easy-item-picker'
+import ReactNativeHapticFeedback from "react-native-haptic-feedback";
 
 type Diceprops = PropsWithChildren <{
   imageUrl : ImageSourcePropType
 }>
+
+const options = {
+  enableVibrateFallback: true,
+  ignoreAndroidSystemSettings: false,
+};
 
 import DiceOne from './src/assets/One.png';
 import DiceTwo from './src/assets/Two.png';
@@ -32,13 +38,47 @@ const Dice = ({imageUrl} : Diceprops) => {
 }
 
 
+
+
 function App(): JSX.Element {
 
+  const [diceImage , setDiceImage] = useState<ImageSourcePropType>(DiceOne)
+
+  const RollonTap = () => {
+    let randomNumber = Math.floor(Math.random() * 6) + 1;
+    switch (randomNumber) {
+      case 1:
+        setDiceImage(DiceOne)
+        break;
+        case 2:
+        setDiceImage(DiceTwo)
+        break;
+        case 3:
+        setDiceImage(DiceThree)
+        break;
+        case 4:
+        setDiceImage(DiceFour)
+        break;
+        case 5:
+        setDiceImage(DiceFive)
+        break;
+        case 6:
+        setDiceImage(DiceSix)
+        break;
+    
+      default:
+        setDiceImage(DiceOne)
+        break;
+    }
+  }
+
+  ReactNativeHapticFeedback.trigger("impactLight", options);
+
   return (
-    <View>
-      <Text>Hello You All!</Text>
-      <View>
-      </View>
+    <View style={styles.container}>
+    <Dice imageUrl={diceImage}/>
+    <Pressable onPress={RollonTap}>
+      <Text style={styles.rollDiceBtnTxt}>Roll the Dice</Text></Pressable>
       </View>
 
   )
@@ -48,6 +88,22 @@ const styles = StyleSheet.create({
   diceImage : {
     width : 200,
     height : 200
+  },
+  container : {
+    flex : 1,
+    justifyContent : 'center',
+    alignItems : "center"
+  },
+  rollDiceBtnTxt : {
+paddingVertical : 10,
+paddingHorizontal : 40,
+borderWidth : 2,
+borderRadius : 8,
+fontSize : 16,
+textTransform : "uppercase",
+fontWeight : "700",
+borderColor : "#E5E0FF",
+color : "#8EA7E9"
   }
 });
 
